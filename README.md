@@ -23,7 +23,7 @@ to pack your whole project. The script will download all pip package and make ev
 7.the dist is in ./rich_dist_center/{{ app_category }}/xx.rich
 
 ### How to deploy
-6. run 
+run 
 ```
 python rich_packager.py p -p /user/bin/python3 -l http://to.package.com/proj_to_package
 
