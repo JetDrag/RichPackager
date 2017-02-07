@@ -30,6 +30,8 @@ python rich_packager.py p -p /user/bin/python3 -l http://to.package.com/proj_to_
 ```
 to unpack and deploy dist to the according path. Then use {{ deploy path}}/venv/bin/python to run your code.
 
+
+###Usage
 ```
 usage: rich_packager.py [-h] -p PYTHON_PATH [-l VCS_PATH] [-tp DIST_PATH]
                         [-dp DEPLOY_PATH]
