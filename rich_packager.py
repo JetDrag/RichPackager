@@ -23,14 +23,14 @@ def dir_create(path, base='', if_file=False, exist_ok=True):
 
 
 class SourceGetSVN(object):
-    def __init__(self, cvs_uri, local_dir):
-        self._svn_uri = cvs_uri
+    def __init__(self, vcs_path, local_dir):
+        self._svn_path = vcs_path
         self._local_dir = local_dir
 
         self._revision_number_str = '0'
 
     def run(self):
-        ret = subprocess.check_output(['svn', 'export', self._svn_uri], universal_newlines=True,
+        ret = subprocess.check_output(['svn', 'export', self._svn_path], universal_newlines=True,
                                       cwd=self._local_dir)
 
         for line in ret.strip().split('\n'):
@@ -43,11 +43,11 @@ class SourceGetSVN(object):
 
 
 class AppPackager(object):
-    def __init__(self, cvs_uri, python_path):
-        self._cvs_uri = cvs_uri
+    def __init__(self, vcs_path, python_path):
+        self._vcs_path = vcs_path
         self._python_path = python_path
 
-        self._app_dir_name = cvs_uri.split('/')[-1]
+        self._app_dir_name = vcs_path.split('/')[-1]
         self._app_classify = None
 
         self._version_info = 'None'
@@ -68,7 +68,7 @@ class AppPackager(object):
             return self.__getattribute__(item)
 
     def export_source_and_get_info(self):
-        obj = SourceGetSVN(self._cvs_uri, self._temp_dir)
+        obj = SourceGetSVN(self._vcs_path, self._temp_dir)
         obj.run()
         self._version_info = obj.version_info if obj.version_info else self._version_info
 
@@ -175,8 +175,8 @@ if __name__ == '__main__':
                        help='Select run mode.', choices=['p', 'd'])
     parse.add_argument('-p', '--python_path', type=str, required=True,
                        help='Python Interpreter path.')
-    parse.add_argument('-l', '--cvs_uri', type=str,
-                       help='CVS uri to fetch.')
+    parse.add_argument('-l', '--vcs_path', type=str,
+                       help='VCS path to fetch.')
     parse.add_argument('-tp', '--dist_path', type=str,
                        help='Dist path.')
     parse.add_argument('-dp', '--deploy_path', type=str,
@@ -184,7 +184,7 @@ if __name__ == '__main__':
     command_args = parse.parse_args()
 
     if command_args.mode == 'p':
-        obj = AppPackager(command_args.cvs_uri, command_args.python_path)
+        obj = AppPackager(command_args.vcs_path, command_args.python_path)
         obj.run()
     elif command_args.mode == 'd':
         obj = AppDeployer(command_args.dist_path, command_args.deploy_path, command_args.python_path, )
