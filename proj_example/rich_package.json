@@ -1,0 +1,8 @@
+{
+  "include_contents": [
+    "data",
+    "requirements_info",
+    "example_pkg"
+  ],
+  "app_classify": "RichPackager.ProjExample"
+}
